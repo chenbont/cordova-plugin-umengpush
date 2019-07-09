@@ -27,3 +27,7 @@ exports.addTags = function (tag, success, error) {
 exports.deleteTags = function (tag, success, error) {
     exec(success, error, 'UMengPush', 'deleteTags', [tag]);
 };
+
+exports.setDisplayNotificationNumber = function (number, success, error) {
+    exec(success, error, 'UMengPush', 'setDisplayNotificationNumber', [number]);
+};

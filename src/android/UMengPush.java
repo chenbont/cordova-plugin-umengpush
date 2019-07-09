@@ -88,10 +88,9 @@ public class UMengPush extends CordovaPlugin {
     }
 
     public void init(JSONArray args, final  CallbackContext callbackContext){
-        tokenSP = this.cordova.getContext().getSharedPreferences("mytoken", 0);
-        String token = tokenSP.getString("token","");
-        if(!tokenSP.getString("token","").equals("")){
-            callbackContext.success(tokenSP.getString("token",""));
+        String token = this.cordova.getContext().getSharedPreferences("mytoken", 0).getString("token","");
+        if(!token.equals("")){
+            callbackContext.success(token);
         }else{
             callbackContext.error("获取token失败");
         }
@@ -202,6 +201,23 @@ public class UMengPush extends CordovaPlugin {
         } else {
             callbackContext.error("参数不能为空.");
         }
+    }
+
+    //设置通知数量
+    public void setDisplayNotificationNumber(JSONArray args, CallbackContext callbackContext) {
+        int number = args.optInt(0);
+
+        mPushAgent.getTagManager().setDisplayNotificationNumber(new TagManager.TCallBack() {
+            @Override
+            public void onMessage(boolean b, ITagManager.Result result) {
+                if(b){
+                    callbackContext.success(String.valueOf(result));
+                }else{
+                    callbackContext.error(String.valueOf(result));
+                }
+            }
+        },number);
+
     }
 
     public void subscribeNotification(JSONArray args, CallbackContext callbackContext) {
